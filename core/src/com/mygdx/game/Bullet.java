@@ -45,5 +45,15 @@ public class Bullet {
 	    }
 	    
 	    public boolean isDestroyed() {return destroyed;}
+	    
+		public boolean checkCollision(Enemy1 enemy1) {
+			if(spr.getBoundingRectangle().overlaps(enemy1.getArea())){
+	        	// Se destruyen ambos
+	            this.destroyed = true;
+	            return true;
+	
+	        }
+	        return false;
+		}
 	
 }

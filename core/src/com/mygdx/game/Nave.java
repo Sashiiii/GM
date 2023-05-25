@@ -9,7 +9,7 @@ public interface Nave {
     public boolean estaDestruido();
     public boolean estaHerido();
     public int getVidas();
-    public int getX() ;
+    public int getX();
     public int getY();
 	public void setVidas(int vidas2);
 }
