@@ -24,6 +24,9 @@ public abstract class Enemy implements Nave {
     private boolean herido = false;
     private int tiempoHeridoMax = 50;
     private int tiempoHerido;
+    private float elapsedTime = 0f;
+    private float shootInterval = 2f;
+    private float deltaTime= 0f;
     
 	public Enemy(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
 		// TODO Auto-generated method stub
@@ -35,6 +38,7 @@ public abstract class Enemy implements Nave {
     	spr = new Sprite(tx);
     	spr.setPosition(x, y);
     	spr.setBounds(x, y, 45, 45);
+    	txBala= new Texture("Rocket2.png");
 
 	}
 	
@@ -49,6 +53,14 @@ public abstract class Enemy implements Nave {
 	@Override
 	public void draw(SpriteBatch batch, PantallaJuego juego) {
 		spr.draw(batch);
+		elapsedTime += deltaTime;
+	    if (elapsedTime >= shootInterval) {
+	        bulletEnemy bala = new bulletEnemy(spr.getX()-spr.getWidth()/2-5,spr.getY()- spr.getHeight()-5,0,3,txBala);
+	        juego.agregarBala(bala);
+	        soundBala.play();
+	        elapsedTime = 0f; // Reinicia el tiempo transcurrido
+	    }
+	   
 	}
 
 	@Override
@@ -117,6 +129,10 @@ public abstract class Enemy implements Nave {
 	@Override
 	public void setVidas(int vidas2) {
 		vidas = vidas2;
+	}
+	
+	public void setDeltaTime(float deltaTime) {
+		this.deltaTime=deltaTime;
 	}
 
 }

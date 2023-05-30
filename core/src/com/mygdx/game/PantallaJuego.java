@@ -88,6 +88,7 @@ public class PantallaJuego implements Screen {
 		  Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		  batch.begin();
           batch.draw(fondo,0,0,fondo.getWidth(),fondo.getHeight());
+          float deltaTime = Gdx.graphics.getDeltaTime(); // Obtiene el tiempo transcurrido desde el último cuadro
           
 		  dibujaEncabezado();
 	      if (!nave.estaHerido()) {
@@ -139,6 +140,7 @@ public class PantallaJuego implements Screen {
 		      }
 		      for (Enemy1 enn : naves1) {
 		          enn.update();
+		          enn.setDeltaTime(deltaTime);
 		      }
 		      //colisiones entre asteroides y sus rebotes  
 		      for (int i=0;i<balls1.size();i++) {

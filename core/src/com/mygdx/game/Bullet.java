@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Bullet {
 
-	private int xSpeed;
-	private int ySpeed;
-	private boolean destroyed = false;
-	private Sprite spr;
+	protected int xSpeed;
+	protected int ySpeed;
+	protected boolean destroyed = false;
+	protected Sprite spr;
 	    
 	    public Bullet(float x, float y, int xSpeed, int ySpeed, Texture tx) {
 	    	spr = new Sprite(tx);
