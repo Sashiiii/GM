@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
@@ -21,6 +23,7 @@ public class User implements Nave {
     private boolean herido = false;
     private int tiempoHeridoMax = 50;
     private int tiempoHerido;
+    private  ArrayList<Bullet> balas = new ArrayList<>();
     
 	public User() {
 		int x= Gdx.graphics.getWidth()/2-50;
@@ -65,7 +68,7 @@ public class User implements Nave {
         // disparo
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {         
           Bullet  bala = new Bullet(spr.getX()+spr.getWidth()/2-5,spr.getY()+ spr.getHeight()-5,0,3,txBala);
-	      juego.agregarBala(bala);
+	      this.agregarBala(bala);
 	      soundBala.play();
         }
 	}
@@ -115,8 +118,77 @@ public class User implements Nave {
         return false;
 	}
 	
+	public void colisionNaveAsteroides(SpriteBatch batch, ArrayList<Ball2> balls1,ArrayList<Ball2> balls2) {
+	      for (int i = 0; i < balls1.size(); i++) {
+	    	    Ball2 b = balls1.get(i);
+	    	    b.draw(batch);
+		          //perdió vida o game over
+	              if (this.checkCollision(b)) {
+		            //asteroide se destruye con el choque             
+	            	 balls1.remove(i);
+	            	 balls2.remove(i);
+	            	 i--;
+	            }   	  
+	      
+	      }
+	}
 	
+	public int  colisionBalasAsteroides(Sound explosionSound, ArrayList<Ball2> balls1, ArrayList<Ball2> balls2) {
+		int score=0;
+		
 
+	  for (int i = 0; i < balas.size(); i++) {
+            Bullet b = balas.get(i);
+            b.update();
+            for (int j = 0; j < balls1.size(); j++) {    
+              if (b.checkCollision(balls1.get(j))) {          
+            	 explosionSound.play();
+            	 balls1.remove(j);
+            	 balls2.remove(j);
+            	 j--;
+            	 score +=10;
+              }   	  
+  	        }
+                
+         //   b.draw(batch);
+            if (b.isDestroyed()) {
+                balas.remove(b);
+                i--; //para no saltarse 1 tras eliminar del arraylist
+            }
+	  }
+	  return score;
+	}
+	
+	public int colisionBalasEnemy(ArrayList<Enemy1> naves1,ArrayList<Enemy1> naves2, Sound explosionSound) {
+		int score=0;
+		for (int i = 0; i < this.balas.size(); i++) {
+            Bullet b = balas.get(i);
+            b.update();
+            for (int j = 0; j < naves1.size(); j++) {    
+              if (b.checkCollision(naves1.get(j))) {          
+            	 explosionSound.play();
+            	 naves1.remove(j);
+            	 naves2.remove(j);
+            	 j--;
+            	 score +=1000;
+              }   	  
+  	        }
+                
+         //   b.draw(batch);
+            if (b.isDestroyed()) {
+                balas.remove(b);
+                i--; //para no saltarse 1 tras eliminar del arraylist
+            }
+		}
+      return score;
+	}
+
+	public void drawBalas(SpriteBatch batch) {
+		for (Bullet b : balas) {       
+	          b.draw(batch);
+	      }
+	}
+	
 	@Override
 	public boolean estaDestruido() {
 		return !herido && destruida;
@@ -155,4 +227,8 @@ public class User implements Nave {
 		return  spr.getBoundingRectangle();
 	}
 
+
+	public boolean agregarBala(Bullet bb) {
+    	return balas.add(bb);
+    }
 }

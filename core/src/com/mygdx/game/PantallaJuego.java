@@ -31,7 +31,6 @@ public class PantallaJuego implements Screen {
 	private User nave;
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
 	private  ArrayList<Ball2> balls2 = new ArrayList<>();
-	private  ArrayList<Bullet> balas = new ArrayList<>();
 	private  ArrayList<BulletEnemy> balasEnemy = new ArrayList<>();
 	private  ArrayList<Enemy1> naves1 = new ArrayList<>();
 	private  ArrayList<Enemy1> naves2 = new ArrayList<>();
@@ -93,56 +92,18 @@ public class PantallaJuego implements Screen {
           
 		  dibujaEncabezado();
 	      if (!nave.estaHerido()) {
-		      // colisiones entre balas y asteroides y su destruccion  
-	    	  for (int i = 0; i < balas.size(); i++) {
-		            Bullet b = balas.get(i);
-		            b.update();
-		            for (int j = 0; j < naves1.size(); j++) {    
-		              if (b.checkCollision(naves1.get(j))) {          
-		            	 explosionSound.play();
-		            	 naves1.remove(j);
-		            	 naves2.remove(j);
-		            	 j--;
-		            	 score +=1000;
-		              }   	  
-		  	        }
-		                
-		         //   b.draw(batch);
-		            if (b.isDestroyed()) {
-		                balas.remove(b);
-		                i--; //para no saltarse 1 tras eliminar del arraylist
-		            }
-		      }
+		      // colisiones entre balas y asteroides y su destruccion
+	    	  
+	    	  score+=nave.colisionBalasEnemy(naves1, naves2, explosionSound);  
+	    	  score+=nave.colisionBalasAsteroides(explosionSound, balls1, balls2);
 	    	  
 	    	  for (int i = 0; i < balasEnemy.size(); i++) {
-		            BulletEnemy bE = balasEnemy.get(i);
-		            bE.update();
-		            bE.checkCollision(nave);   
-		            nave.checkCollision(bE);
-		            	  	  
-		  	  }
-
-
-
-	    	  for (int i = 0; i < balas.size(); i++) {
-		            Bullet b = balas.get(i);
-		            b.update();
-		            for (int j = 0; j < balls1.size(); j++) {    
-		              if (b.checkCollision(balls1.get(j))) {          
-		            	 explosionSound.play();
-		            	 balls1.remove(j);
-		            	 balls2.remove(j);
-		            	 j--;
-		            	 score +=10;
-		              }   	  
-		  	        }
-		                
-		         //   b.draw(batch);
-		            if (b.isDestroyed()) {
-		                balas.remove(b);
-		                i--; //para no saltarse 1 tras eliminar del arraylist
-		            }
-		      }
+	              BulletEnemy bE = balasEnemy.get(i);
+	              bE.update();
+	              bE.checkCollision(nave);   
+	              nave.checkCollision(bE);
+	              	  	  
+	    	  }
 	    	  
 		      //actualizar movimiento de asteroides dentro del area
 		      for (Ball2 ball : balls1) {
@@ -163,27 +124,42 @@ public class PantallaJuego implements Screen {
 		          }
 		        }
 		      } 
-	}
-	      //dibujar balas
-	     for (Bullet b : balas) {       
-	          b.draw(batch);
 	      }
+	      //dibujar balas
+	      nave.drawBalas(batch);
+	      for (int i = 0; i < balasEnemy.size(); i++) {
+              BulletEnemy bE = balasEnemy.get(i);
+            bE.draw(batch);
+              //perdiÃ³ vida o game over
+              if (nave.checkCollision(bE)) {
+                 balasEnemy.remove(i);
+                 i--;
+              }
+              /*
+              if(bE.checkCollision(nave)) {
+                  balasEnemy.remove(i);
+                  i--;
+              }*/
+
+        }
+	     
 	     for (Enemy1 enemyy: naves1) {       
 	          enemyy.draw(batch,this);
 	     }
-	      nave.draw(batch, this);
+	     nave.draw(batch, this);
 	      //dibujar asteroides y manejar colision con nave
-	      for (int i = 0; i < balls1.size(); i++) {
-	    	    Ball2 b = balls1.get(i);
-	    	    b.draw(batch);
-		          //perdió vida o game over
-	              if (nave.checkCollision(b)) {
-		            //asteroide se destruye con el choque             
-	            	 balls1.remove(i);
-	            	 balls2.remove(i);
-	            	 i--;
-              }   	  
-  	        }
+	     nave.colisionNaveAsteroides(batch, balls1, balls2);
+	     
+	     for (int i = 0; i < balasEnemy.size(); i++) {
+             BulletEnemy b = balasEnemy.get(i);
+             b.update();
+
+          //   b.draw(batch);
+             if (b.isDestroyed()) {
+                 balasEnemy.remove(b);
+                 i--; //para no saltarse 1 tras eliminar del arraylist
+             }
+       }
 	      
 	      if (nave.estaDestruido()) {
   			if (score > game.getHighScore())
@@ -205,12 +181,9 @@ public class PantallaJuego implements Screen {
 	    	 
 	}
     
-    public boolean agregarBala(Bullet bb) {
-    	return balas.add(bb);
-    }
     
-    public boolean agregarBalaEnemy(Bullet bb) {
-    	return balas.add(bb);
+    public boolean agregarBalaEnemy(BulletEnemy bb) {
+    	return balasEnemy.add(bb);
     }
 	
 	@Override
