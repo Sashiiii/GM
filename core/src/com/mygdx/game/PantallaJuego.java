@@ -26,6 +26,7 @@ public class PantallaJuego implements Screen {
 	private int velYAsteroides; 
 	private int cantAsteroides;
 	private int cantEnemy1;
+	private Texture fondo;
 	
 	private User nave;
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
@@ -35,7 +36,7 @@ public class PantallaJuego implements Screen {
 	private  ArrayList<Enemy1> naves2 = new ArrayList<>();
 
 	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,  
-			int velXAsteroides, int velYAsteroides, int cantAsteroides, int cantEnemy1) {
+		int velXAsteroides, int velYAsteroides, int cantAsteroides, int cantEnemy1) {
 		this.game = game;
 		this.ronda = ronda;
 		this.score = score;
@@ -43,6 +44,7 @@ public class PantallaJuego implements Screen {
 		this.velYAsteroides = velYAsteroides;
 		this.cantAsteroides = cantAsteroides;
 		this.cantEnemy1 = cantEnemy1;
+		this.fondo = new Texture("fondo.jpg");
 		
 		batch = game.getBatch();
 		camera = new OrthographicCamera();	
@@ -60,7 +62,6 @@ public class PantallaJuego implements Screen {
 	    nave = new User(); 
         nave.setVidas(vidas);
         //crear asteroides
-        Random r = new Random();
 	    for (int i = 0; i < cantAsteroides; i++) {
 	        Ball2 bb = new Ball2( velXAsteroides, velYAsteroides);	   
 	  	    balls1.add(bb);
@@ -85,7 +86,9 @@ public class PantallaJuego implements Screen {
 	@Override
 	public void render(float delta) {
 		  Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-          batch.begin();
+		  batch.begin();
+          batch.draw(fondo,0,0,fondo.getWidth(),fondo.getHeight());
+          
 		  dibujaEncabezado();
 	      if (!nave.estaHerido()) {
 		      // colisiones entre balas y asteroides y su destruccion  

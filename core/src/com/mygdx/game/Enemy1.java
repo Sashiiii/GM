@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class Enemy1 extends Enemy{
 	static int x= Gdx.graphics.getWidth()/2-50;
 	static int y= Gdx.graphics.getHeight()-50;
-	static Texture tx= new Texture(Gdx.files.internal("MainShip3.png"));
+	static Texture tx= new Texture(Gdx.files.internal("ovni.png"));
 	static Texture txBala= new Texture(Gdx.files.internal("Rocket2.png"));
 	static Sound soundChoque= Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
 	static Sound soundBala= Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
