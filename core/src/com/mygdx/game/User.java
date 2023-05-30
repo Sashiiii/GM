@@ -21,12 +21,13 @@ public class User implements Nave {
     private int tiempoHeridoMax = 50;
     private int tiempoHerido;
     
-	public User(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
-		// TODO Auto-generated method stub
-		sonidoHerido = soundChoque;
-    	this.soundBala = soundBala;
-    	this.txBala = txBala;
-    	spr = new Sprite(tx);
+	public User() {
+		int x= Gdx.graphics.getWidth()/2-50;
+		int y= 30; 
+		sonidoHerido = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
+    	this.soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
+    	this.txBala = new Texture(Gdx.files.internal("Rocket2.png"));
+    	spr = new Sprite(new Texture(Gdx.files.internal("MainShip3.png")));
     	spr.setPosition(x, y);
     	spr.setBounds(x, y, 45, 45);
 	}

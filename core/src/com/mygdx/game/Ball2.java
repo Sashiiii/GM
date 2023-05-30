@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -14,15 +16,22 @@ public class Ball2 {
     private int ySpeed;
     private Sprite spr;
 
-    public Ball2(int x, int y, int size, int xSpeed, int ySpeed, Texture tx) {
-    	spr = new Sprite(tx);
-    	this.x = x; 
+    public Ball2(int xSpeed, int ySpeed) {
+    	
+    	Random r = new Random();
+    	this.xSpeed=xSpeed+r.nextInt(4);
+    	this.ySpeed=ySpeed+r.nextInt(4);
+    	spr = new Sprite( new Texture(Gdx.files.internal("aGreyMedium4.png")));
+    	this.x = r.nextInt((int)Gdx.graphics.getWidth()); 
+    	
+    	int size= 20+r.nextInt(10);
+    	
  	
         //validar que borde de esfera no quede fuera
     	if (x-size < 0) this.x = x+size;
     	if (x+size > Gdx.graphics.getWidth())this.x = x-size;
          
-        this.y = y;
+        this.y = 50+r.nextInt((int)Gdx.graphics.getHeight()-50);
         //validar que borde de esfera no quede fuera
     	if (y-size < 0) this.y = y+size;
     	if (y+size > Gdx.graphics.getHeight())this.y = y-size;

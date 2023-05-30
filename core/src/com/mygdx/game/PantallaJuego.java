@@ -57,27 +57,18 @@ public class PantallaJuego implements Screen {
 		gameMusic.play();
 		
 	    // cargar imagen de la nave, 64x64   
-	    nave = new User(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("MainShip3.png")),
-	    				Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")), 
-	    				new Texture(Gdx.files.internal("Rocket2.png")), 
-	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))); 
+	    nave = new User(); 
         nave.setVidas(vidas);
         //crear asteroides
         Random r = new Random();
 	    for (int i = 0; i < cantAsteroides; i++) {
-	        Ball2 bb = new Ball2(r.nextInt((int)Gdx.graphics.getWidth()),
-	  	            50+r.nextInt((int)Gdx.graphics.getHeight()-50),
-	  	            20+r.nextInt(10), velXAsteroides+r.nextInt(4), velYAsteroides+r.nextInt(4), 
-	  	            new Texture(Gdx.files.internal("aGreyMedium4.png")));	   
+	        Ball2 bb = new Ball2( velXAsteroides, velYAsteroides);	   
 	  	    balls1.add(bb);
 	  	    balls2.add(bb);
 	  	}
 	    int altura = Gdx.graphics.getHeight()-50;
 	    for (int i = 0; i < cantEnemy1; i++) {
-	        Enemy1 ne = new Enemy1(Gdx.graphics.getWidth()/2-50,altura,new Texture(Gdx.files.internal("MainShip3.png")),
-    				Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")), 
-    				new Texture(Gdx.files.internal("Rocket2.png")), 
-    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))); 
+	        Enemy1 ne = new Enemy1(); 
 	        altura = altura - 60;
 	  	    naves1.add(ne);
 	  	    naves2.add(ne);
