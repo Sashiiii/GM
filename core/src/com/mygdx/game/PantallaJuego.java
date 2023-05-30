@@ -32,6 +32,7 @@ public class PantallaJuego implements Screen {
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
 	private  ArrayList<Ball2> balls2 = new ArrayList<>();
 	private  ArrayList<Bullet> balas = new ArrayList<>();
+	private  ArrayList<BulletEnemy> balasEnemy = new ArrayList<>();
 	private  ArrayList<Enemy1> naves1 = new ArrayList<>();
 	private  ArrayList<Enemy1> naves2 = new ArrayList<>();
 
@@ -112,6 +113,15 @@ public class PantallaJuego implements Screen {
 		                i--; //para no saltarse 1 tras eliminar del arraylist
 		            }
 		      }
+	    	  
+	    	  for (int i = 0; i < balasEnemy.size(); i++) {
+		            BulletEnemy bE = balasEnemy.get(i);
+		            bE.update();
+		            bE.checkCollision(nave);   
+		            nave.checkCollision(bE);
+		            	  	  
+		  	  }
+
 
 
 	    	  for (int i = 0; i < balas.size(); i++) {
@@ -153,7 +163,7 @@ public class PantallaJuego implements Screen {
 		          }
 		        }
 		      } 
-	      }
+	}
 	      //dibujar balas
 	     for (Bullet b : balas) {       
 	          b.draw(batch);
@@ -196,6 +206,10 @@ public class PantallaJuego implements Screen {
 	}
     
     public boolean agregarBala(Bullet bb) {
+    	return balas.add(bb);
+    }
+    
+    public boolean agregarBalaEnemy(Bullet bb) {
     	return balas.add(bb);
     }
 	

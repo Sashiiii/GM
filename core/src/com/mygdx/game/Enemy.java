@@ -25,7 +25,7 @@ public abstract class Enemy implements Nave {
     private int tiempoHeridoMax = 50;
     private int tiempoHerido;
     private float elapsedTime = 0f;
-    private float shootInterval = 2f;
+    private float shootInterval = 1f;
     private float deltaTime= 0f;
     
 	public Enemy(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
@@ -55,8 +55,8 @@ public abstract class Enemy implements Nave {
 		spr.draw(batch);
 		elapsedTime += deltaTime;
 	    if (elapsedTime >= shootInterval) {
-	        bulletEnemy bala = new bulletEnemy(spr.getX()-spr.getWidth()/2-5,spr.getY()- spr.getHeight()-5,0,3,txBala);
-	        juego.agregarBala(bala);
+	        BulletEnemy bala = new BulletEnemy(spr.getX()-spr.getWidth()/2-5,spr.getY()- spr.getHeight()-5,0,3,txBala);
+	        juego.agregarBalaEnemy(bala);
 	        soundBala.play();
 	        elapsedTime = 0f; // Reinicia el tiempo transcurrido
 	    }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 
 public class User implements Nave {
 	private boolean destruida = false;
@@ -98,6 +99,23 @@ public class User implements Nave {
         }
         return false;
 	}
+	
+	public boolean checkCollision(BulletEnemy b) {
+		if(!herido && b.getArea().overlaps(spr.getBoundingRectangle())){
+        	
+        	//actualizar vidas y herir
+            vidas--;
+            herido = true;
+  		    tiempoHerido=tiempoHeridoMax;
+  		    sonidoHerido.play();
+            if (vidas<=0) 
+          	    destruida = true; 
+            return true;
+        }
+        return false;
+	}
+	
+	
 
 	@Override
 	public boolean estaDestruido() {
@@ -130,6 +148,11 @@ public class User implements Nave {
 	@Override
 	public void setVidas(int vidas2) {
 		vidas = vidas2;
+	}
+
+	public Rectangle getArea() {
+		// TODO Auto-generated method stub
+		return  spr.getBoundingRectangle();
 	}
 
 }
