@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
+import screens.PantallaJuego;
+
 public class User implements Nave {
 	private boolean destruida = false;
     private int vidas = 3;
@@ -159,29 +161,6 @@ public class User implements Nave {
 	  return score;
 	}
 	
-	public int colisionBalasEnemy(ArrayList<Enemy1> naves1,ArrayList<Enemy1> naves2, Sound explosionSound) {
-		int score=0;
-		for (int i = 0; i < this.balas.size(); i++) {
-            Bullet b = balas.get(i);
-            b.update();
-            for (int j = 0; j < naves1.size(); j++) {    
-              if (b.checkCollision(naves1.get(j))) {          
-            	 explosionSound.play();
-            	 naves1.remove(j);
-            	 naves2.remove(j);
-            	 j--;
-            	 score +=1000;
-              }   	  
-  	        }
-                
-         //   b.draw(batch);
-            if (b.isDestroyed()) {
-                balas.remove(b);
-                i--; //para no saltarse 1 tras eliminar del arraylist
-            }
-		}
-      return score;
-	}
 
 	public void drawBalas(SpriteBatch batch) {
 		for (Bullet b : balas) {       
@@ -227,8 +206,11 @@ public class User implements Nave {
 		return  spr.getBoundingRectangle();
 	}
 
-
+	public ArrayList<Bullet> getBalas() {
+		return balas;
+	}
+	
 	public boolean agregarBala(Bullet bb) {
     	return balas.add(bb);
     }
-}
+}	

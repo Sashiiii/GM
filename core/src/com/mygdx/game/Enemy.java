@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
@@ -8,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+
+import screens.PantallaJuego;
 
 public abstract class Enemy implements Nave {
 
@@ -91,6 +95,25 @@ public abstract class Enemy implements Nave {
             return true;
         }
         return false;
+	}
+	
+	public boolean colisionBalaUser(ArrayList<Bullet> balas, Sound explosionSound) {
+		for (int i = 0; i < balas.size(); i++) {
+            Bullet b = balas.get(i);
+            b.update();
+            if (b.checkCollision(this)) {          
+            	 explosionSound.play();
+            	 
+            }   	  
+                
+         //   b.draw(batch);
+            if (b.isDestroyed()) {
+                balas.remove(b);
+                i--; //para no saltarse 1 tras eliminar del arraylist
+                return true;
+            }
+		}
+      return false;
 	}
 	
 	
