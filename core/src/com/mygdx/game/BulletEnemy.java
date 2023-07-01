@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class BulletEnemy extends Bullet{
 
-	public BulletEnemy(float x, float y, int xSpeed, int ySpeed, Texture tx) {
-		super(x,y,xSpeed,ySpeed, tx);
+	public BulletEnemy(BulletBuilder builder) {
+		super(builder);
 		// TODO Auto-generated constructor stub
 	}
 	public void update() {

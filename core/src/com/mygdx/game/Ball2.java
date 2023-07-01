@@ -19,8 +19,8 @@ public class Ball2 {
     public Ball2(int xSpeed, int ySpeed) {
     	
     	Random r = new Random();
-    	this.xSpeed=xSpeed+r.nextInt(4);
-    	this.ySpeed=ySpeed+r.nextInt(4);
+    	this.xSpeed = xSpeed+r.nextInt(4);
+    	this.ySpeed = ySpeed+r.nextInt(4);
     	spr = new Sprite( new Texture(Gdx.files.internal("aGreyMedium4.png")));
     	this.x = r.nextInt((int)Gdx.graphics.getWidth()); 
     	

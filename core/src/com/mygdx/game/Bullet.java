@@ -10,14 +10,16 @@ public class Bullet {
 
 	protected int xSpeed;
 	protected int ySpeed;
+	protected int x;
+	protected int y;
 	protected boolean destroyed = false;
 	protected Sprite spr;
 	    
-	    public Bullet(float x, float y, int xSpeed, int ySpeed, Texture tx) {
-	    	spr = new Sprite(tx);
-	    	spr.setPosition(x, y);
-	        this.xSpeed = xSpeed;
-	        this.ySpeed = ySpeed;
+	    public Bullet(BulletBuilder builder) { //recibe builder float x, float y, int xSpeed, int ySpeed, Texture tx
+	    	spr = builder.getSpr();
+	    	spr.setPosition(builder.getX(), builder.getY());
+	        this.xSpeed = builder.getXSpeed();
+	        this.ySpeed = builder.getYSpeed();
 	    }
 	    public void update() {
 	        spr.setPosition(spr.getX()+xSpeed, spr.getY()+ySpeed);
@@ -55,5 +57,7 @@ public class Bullet {
 	        }
 	        return false;
 		}
+		
+
 	
 }

@@ -93,10 +93,17 @@ public class User implements Nave {
  		   if (tiempoHerido<=0) herido = false;
  		 }
         // disparo
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {         
-          Bullet  bala = new Bullet(spr.getX()+spr.getWidth()/2-5,spr.getY()+ spr.getHeight()-5,0,3,txBala);
-	      this.agregarBala(bala);
-	      soundBala.play();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {      
+        	BulletBuilder bul = new BulletBuilder(0);
+        	bul.setYSpeed(3);
+        	bul.setX(spr.getX()+spr.getWidth()/2-5);
+        	bul.setY(spr.getY()+ spr.getHeight()-5);
+        	bul.setSpr(new Sprite(new Texture(Gdx.files.internal("Rocket2.png"))));
+        	//(,,0,3,txBala)
+        	Bullet bala = new Bullet(bul);
+        	
+        	this.agregarBala(bala);
+        	soundBala.play();
         }
 	}
 

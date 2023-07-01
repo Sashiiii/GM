@@ -42,7 +42,7 @@ public abstract class Enemy implements Nave {
     	spr = new Sprite(tx);
     	spr.setPosition(x, y);
     	spr.setBounds(x, y, 45, 45);
-    	txBala= new Texture("Rocket2.png");
+    	txBala = new Texture("Rocket2.png");
 
 	}
 	
@@ -59,7 +59,20 @@ public abstract class Enemy implements Nave {
 		spr.draw(batch);
 		elapsedTime += deltaTime;
 	    if (elapsedTime >= shootInterval) {
-	        BulletEnemy bala = new BulletEnemy(spr.getX()-spr.getWidth()/2-5,spr.getY()- spr.getHeight()-5,0,3,txBala);
+	    	
+	    	
+	    	
+	    	BulletBuilder bul = new BulletBuilder(0);
+        	bul.setYSpeed(3);
+        	bul.setX(spr.getX()-spr.getWidth()/2-5);
+        	bul.setY(spr.getY()- spr.getHeight()-5);
+        	bul.setSpr(new Sprite(txBala));
+        	//(,,0,3,txBala)
+        	BulletEnemy bala = new BulletEnemy(bul);
+	    	
+	    	
+	    	
+	        //BulletEnemy bala = new BulletEnemy(spr.getX()-spr.getWidth()/2-5,spr.getY()- spr.getHeight()-5,0,3,);
 	        juego.agregarBalaEnemy(bala);
 	        soundBala.play();
 	        elapsedTime = 0f; // Reinicia el tiempo transcurrido
