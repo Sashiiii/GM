@@ -15,21 +15,26 @@ import screens.PantallaJuego;
 
 public class User implements Nave {
 	private boolean destruida = false;
-    private int vidas = 3;
+    private static int vidas = 3;
     private float xVel = 0;
     private float yVel = 0;
-    private Sprite spr;
-    private Sound sonidoHerido;
-    private Sound soundBala;
-    private Texture txBala;
+    private static Sprite spr;
+    private Sound sonidoHerido = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
+    private Sound soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
+    private Texture txBala = new Texture(Gdx.files.internal("Rocket2.png"));
     private boolean herido = false;
     private int tiempoHeridoMax = 50;
     private int tiempoHerido;
     private  ArrayList<Bullet> balas = new ArrayList<>();
     
-	public User() {
-		int x= Gdx.graphics.getWidth()/2-50;
-		int y= 30; 
+    //instancia unica y privada de User
+    private static User instance;
+    
+    //constructor privado de User para cumplir con singleton
+	private User() {
+		int x = Gdx.graphics.getWidth()/2-50;
+		int y = 30; 
+		vidas = 3;
 		sonidoHerido = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
     	this.soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
     	this.txBala = new Texture(Gdx.files.internal("Rocket2.png"));
@@ -37,7 +42,27 @@ public class User implements Nave {
     	spr.setPosition(x, y);
     	spr.setBounds(x, y, 45, 45);
 	}
-
+	
+	
+	//Singleton
+	public static User getInstance() {
+        if (instance == null) {
+            instance = new User();
+            int x = Gdx.graphics.getWidth()/2-50;
+    		int y = 30; 
+        	spr = new Sprite(new Texture(Gdx.files.internal("MainShip3.png")));
+        	spr.setPosition(x, y);
+        	spr.setBounds(x, y, 45, 45);
+        	vidas = 3;
+        }        
+        
+        return instance;
+    }
+	
+	public static void setNull() {
+        instance = null;
+    }
+	
 	@Override
 	public void draw(SpriteBatch batch, PantallaJuego juego) {
 		// TODO Auto-generated method stub
@@ -148,7 +173,7 @@ public class User implements Nave {
             	 balls1.remove(j);
             	 balls2.remove(j);
             	 j--;
-            	 score +=10;
+            	 score += 100;
               }   	  
   	        }
                 
@@ -213,4 +238,4 @@ public class User implements Nave {
 	public boolean agregarBala(Bullet bb) {
     	return balas.add(bb);
     }
-}	
+}

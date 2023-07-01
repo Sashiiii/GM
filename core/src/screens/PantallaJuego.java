@@ -30,7 +30,6 @@ public class PantallaJuego implements Screen {
 	private int cantEnemy1;
 	private Texture fondo;
 	
-	private User nave;
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
 	private  ArrayList<Ball2> balls2 = new ArrayList<>();
 	
@@ -60,8 +59,8 @@ public class PantallaJuego implements Screen {
 		gameMusic.play();
 		
 	    // cargar imagen de la nave, 64x64   
-	    nave = new User(); 
-        nave.setVidas(game.getVida());
+	    User.getInstance().setVidas(game.getVida());
+        
         //crear asteroides
 	    crearAsteroides();
 	    crearEnemigos();
@@ -69,7 +68,7 @@ public class PantallaJuego implements Screen {
 	}
     
 	public void dibujaEncabezado() {
-		CharSequence str = "Vidas: "+nave.getVidas()+" Ronda: "+ronda;
+		CharSequence str = "Vidas: "+User.getInstance().getVidas()+" Ronda: "+ronda;
 		game.getFont().getData().setScale(2f);		
 		game.getFont().draw(batch, str, 10, 30);
 		game.getFont().draw(batch, "Score:"+this.score, Gdx.graphics.getWidth()-150, 30);
@@ -83,11 +82,11 @@ public class PantallaJuego implements Screen {
           float deltaTime = Gdx.graphics.getDeltaTime(); // Obtiene el tiempo transcurrido desde el último cuadro
           
 		  dibujaEncabezado();
-	      if (!nave.estaHerido()) {
+	      if (!User.getInstance().estaHerido()) {
 		      // colisiones entre balas y asteroides y su destruccion
 	    	  
-	    	  score+=colisionBalasEnemy(nave.getBalas());  
-	    	  score+=nave.colisionBalasAsteroides(explosionSound, balls1, balls2);
+	    	  colisionBalasEnemy(User.getInstance().getBalas());  
+	    	  score += User.getInstance().colisionBalasAsteroides(explosionSound, balls1, balls2);
 	    	  colisionBulletEnUs();
 	    	  actualizarEnemigos(deltaTime);
 		      //actualizar movimiento de asteroides dentro del area
@@ -97,16 +96,18 @@ public class PantallaJuego implements Screen {
 		  }
 	      
 	      //dibujar balas
-	      nave.drawBalas(batch);
+	      User.getInstance().drawBalas(batch);
 	      disparoNavesEn();
 	      for (Enemy1 enemyy: naves1) {       
 	          enemyy.draw(batch,this);
 	      }
-	      nave.draw(batch, this);
+	      User.getInstance().draw(batch, this);
 	      //dibujar asteroides y manejar colision con nave
-	      nave.colisionNaveAsteroides(batch, balls1, balls2);
+	      User.getInstance().colisionNaveAsteroides(batch, balls1, balls2);
 	    
-	      if (nave.estaDestruido()) {
+	      if (User.getInstance().estaDestruido()) {
+	    	User.setNull();
+	    	User.getInstance();
   			gameover();
   		  }
 	      
@@ -117,8 +118,9 @@ public class PantallaJuego implements Screen {
     
 	public void gameover() {
 		if (score > game.getHighScore()) game.setHighScore(score);
-		    nave.setVidas(3);
+		    User.getInstance().setVidas(3);
 		    game.setVida(3);
+		    game.setRonda(1);
 			Screen ss = new PantallaGameOver(game);
 			ss.resize(1200, 800);
 			game.setScreen(ss);
@@ -126,7 +128,7 @@ public class PantallaJuego implements Screen {
 	}
 	public void checkBalls() {
 		if (balls1.size()==0) {
-	      	game.setVida(nave.getVidas());
+	      	game.setVida(User.getInstance().getVidas());
 	      	game.setRonda(ronda+1);
 			Screen ss = new PantallaJuego(game, velXAsteroides+3, velYAsteroides+3, cantAsteroides+10, 1);
 			ss.resize(1200, 800);
@@ -197,8 +199,8 @@ public class PantallaJuego implements Screen {
 		
 	}
 	//colision balas de usuario con naves enemigas
-	public int colisionBalasEnemy(ArrayList<Bullet> balas) {
-		int score=0;
+	public void colisionBalasEnemy(ArrayList<Bullet> balas) {
+		//int score=0;
 		for (int j = 0; j < naves1.size(); j++) {    
               if (naves1.get(j).colisionBalaUser(balas, explosionSound)) {          
             	 naves1.remove(j);
@@ -213,7 +215,6 @@ public class PantallaJuego implements Screen {
               } */  	  
 	    }
                 
-      return score;
 	}
 	
 	//colision balas de enemigos con la nave usuario
@@ -224,7 +225,7 @@ public class PantallaJuego implements Screen {
 			bulletsAct=naves1.get(i).getBalasEnemy();
 			for(int j=0;j<bulletsAct.size();j++) {
 				b=bulletsAct.get(i);
-				nave.checkCollision(b);
+				User.getInstance().checkCollision(b);
 			}
 		}
 	}
