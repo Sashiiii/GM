@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -11,6 +12,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
+import BulletStrategy.Bullet;
+import BulletStrategy.BulletFactory;
+import BulletStrategy.BulletSpace;
+import BulletStrategy.BulletStrategy;
+import BulletStrategy.BulletXButton;
 import screens.PantallaJuego;
 
 public class User implements Nave {
@@ -20,11 +26,12 @@ public class User implements Nave {
     private float yVel = 0;
     private static Sprite spr;
     private Sound sonidoHerido = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
-    private Sound soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
-    private Texture txBala = new Texture(Gdx.files.internal("Rocket2.png"));
+   // private Texture txBala = new Texture(Gdx.files.internal("Rocket2.png"));
     private boolean herido = false;
     private int tiempoHeridoMax = 50;
     private int tiempoHerido;
+    private int xMax=3;
+   // private BulletFactory bulletFactory;
     private  ArrayList<Bullet> balas = new ArrayList<>();
     
     //instancia unica y privada de User
@@ -36,11 +43,12 @@ public class User implements Nave {
 		int y = 30; 
 		vidas = 3;
 		sonidoHerido = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
-    	this.soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
-    	this.txBala = new Texture(Gdx.files.internal("Rocket2.png"));
+    	
+    	//this.txBala = new Texture(Gdx.files.internal("Rocket2.png"));
     	spr = new Sprite(new Texture(Gdx.files.internal("MainShip3.png")));
     	spr.setPosition(x, y);
     	spr.setBounds(x, y, 45, 45);
+    	//bulletFactory= new BulletFactory();
 	}
 	
 	
@@ -68,6 +76,7 @@ public class User implements Nave {
 		// TODO Auto-generated method stub
 		float x =  spr.getX();
         float y =  spr.getY();
+        String key;
         if (!herido) {
 	        // que se mueva con teclado
 	        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) xVel--;
@@ -92,18 +101,19 @@ public class User implements Nave {
  		   tiempoHerido--;
  		   if (tiempoHerido<=0) herido = false;
  		 }
+        
         // disparo
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {      
-        	BulletBuilder bul = new BulletBuilder(0);
-        	bul.setYSpeed(3);
-        	bul.setX(spr.getX()+spr.getWidth()/2-5);
-        	bul.setY(spr.getY()+ spr.getHeight()-5);
-        	bul.setSpr(new Sprite(new Texture(Gdx.files.internal("Rocket2.png"))));
-        	//(,,0,3,txBala)
-        	Bullet bala = new Bullet(bul);
-        	
+        
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) { 
+        	Bullet bala = BulletFactory.createBullet("s", spr.getX()+spr.getWidth()/2-5, spr.getY()+ spr.getHeight()-5);
+        	bala.disparar();
         	this.agregarBala(bala);
-        	soundBala.play();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.X) && xMax>0) { 
+        	Bullet bala = BulletFactory.createBullet("x", spr.getX()+spr.getWidth()/2-5, spr.getY()+ spr.getHeight()-5);
+        	bala.disparar();
+        	this.agregarBala(bala);
+        	xMax--;
         }
 	}
 
@@ -137,7 +147,7 @@ public class User implements Nave {
         return false;
 	}
 	
-	public boolean checkCollision(BulletEnemy b) {
+	public boolean checkCollision(Bullet b) {
 		if(!herido && b.getArea().overlaps(spr.getBoundingRectangle())){
         	
         	//actualizar vidas y herir

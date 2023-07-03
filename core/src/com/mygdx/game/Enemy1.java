@@ -7,18 +7,17 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import BulletStrategy.Bullet;
+
 public class Enemy1 extends Enemy{
 	private static int x= Gdx.graphics.getWidth()/2-50;
 	private static int y= Gdx.graphics.getHeight()-50;
 	private static Texture tx= new Texture(Gdx.files.internal("ovni.png"));
-	private static Texture txBala= new Texture(Gdx.files.internal("Rocket2.png"));
-	private static Sound soundChoque= Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
-	private static Sound soundBala= Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
-	private  ArrayList<BulletEnemy> balasEnemy = new ArrayList<>();
+	private  ArrayList<Bullet> balasEnemy = new ArrayList<>();
 	
 
 	public Enemy1() {
-		super(x, y, tx, soundChoque, txBala, soundBala);
+		super(x, y, tx);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -36,7 +35,7 @@ public class Enemy1 extends Enemy{
 	
 	public void drawBalas(SpriteBatch batch) {
 	     for (int i = 0; i < balasEnemy.size(); i++) {
-             BulletEnemy b = balasEnemy.get(i);
+             Bullet b = balasEnemy.get(i);
              b.update();
              b.draw(batch);
              if (b.isDestroyed()) {
@@ -47,11 +46,17 @@ public class Enemy1 extends Enemy{
 	     }
 	}
 	
-	public ArrayList<BulletEnemy> getBalasEnemy() {
+	public ArrayList<Bullet> getBalasEnemy() {
 		return balasEnemy;
 	}
 
-	public void setBalasEnemy(ArrayList<BulletEnemy> balasEnemy) {
+	public void setBalasEnemy(ArrayList<Bullet> balasEnemy) {
 		this.balasEnemy = balasEnemy;
+	}
+
+	@Override
+	public boolean checkCollision(Ball2 b) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

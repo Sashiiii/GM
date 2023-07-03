@@ -13,6 +13,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.SpaceNavigation;
 import com.mygdx.game.User;
+
+import BulletStrategy.Bullet;
+
 import com.mygdx.game.*;
 
 public class PantallaJuego implements Screen {
@@ -52,7 +55,7 @@ public class PantallaJuego implements Screen {
 		//inicializar assets; musica de fondo y efectos de sonido
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
 		explosionSound.setVolume(1,0.5f);
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("satie.mp3")); //
 		
 		gameMusic.setLooping(true);
 		gameMusic.setVolume(0.5f);
@@ -164,7 +167,7 @@ public class PantallaJuego implements Screen {
 	  	}
     }
 	
-    public boolean agregarBalaEnemy(BulletEnemy bb) {
+    public boolean agregarBalaEnemy(Bullet bb) {
     	for (int j = 0; j < naves1.size(); j++) {    
             naves1.get(j).getBalasEnemy().add(bb);   	    
 			//naves2.get(j).getBalasEnemy().add(bb);
@@ -219,8 +222,8 @@ public class PantallaJuego implements Screen {
 	
 	//colision balas de enemigos con la nave usuario
 	public void colisionBulletEnUs() {
-		ArrayList<BulletEnemy> bulletsAct;
-		BulletEnemy b;
+		ArrayList<Bullet> bulletsAct;
+		Bullet b;
 		for (int i = 0; i < naves1.size(); i++) {  
 			bulletsAct=naves1.get(i).getBalasEnemy();
 			for(int j=0;j<bulletsAct.size();j++) {

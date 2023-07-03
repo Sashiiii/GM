@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Enemy2 extends Enemy{
 
-	public Enemy2(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
-		super(x, y, tx, soundChoque, txBala, soundBala);
+	public Enemy2(int x, int y, Texture tx) {
+		super(x, y, tx);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -20,5 +20,11 @@ public class Enemy2 extends Enemy{
 	public int getY() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public boolean checkCollision(Ball2 b) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
